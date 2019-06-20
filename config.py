@@ -4,3 +4,4 @@ class Config:
         self.n = confd['n']
         self.f = confd['f']
         self.id = confd['id']
+        self.ips = confd['ips']
