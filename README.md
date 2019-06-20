@@ -9,3 +9,5 @@ resilience we must replicate our program and its data. This project is an
 implementation of the protocol found in this paper by Bracha [1] that describes
 two randomized protocols for the crash and byzantine fault models. This project
 is an implementation for the latter.
+
+[1] _Asynchronous consensus and broadcast protocols_, 1985.
