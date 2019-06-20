@@ -63,7 +63,7 @@ def main(args):
     r = 0
     d = False
 
-    while !d:
+    while not(d):
         v, d = do_round(conf, ch, v, r)
         r += 1
 

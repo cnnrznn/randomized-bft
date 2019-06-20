@@ -1,8 +1,12 @@
 class Filter:
 
     def __init__(self):
-        pass
+        self.seen = set()
 
-    def filter(msg):
-        # TODO haha actually do this
+    def filter(self, sender, msg):
+        if (sender, msg.type, msg.fr, msg.round) in self.seen:
+            return False
+
+        self.seen.add((sender, msg.type, msg.fr, msg.round))
+
         return True
