@@ -9,8 +9,7 @@ from message import Message, Type
 from message_filter import Filter
 import util
 
-def do_round(conf, ch, r):
-    v = random.randrange(2)
+def do_round(conf, ch, v, r):
     message_count = [ 0, 0 ]
     echo_count = [ [ 0, 0 ] for i in range(conf.n) ]
     decision = False
@@ -60,7 +59,13 @@ def main(args):
     mf = Filter()
     ch = channel.Channel(conf, mf)
 
-    do_round(conf, ch, 0)
+    v = random.randrange(2)
+    r = 0
+    d = False
+
+    while !d:
+        v, d = do_round(conf, ch, v, r)
+        r += 1
 
     return
 
