@@ -75,7 +75,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser('An implementation of Bracha\'s randomized BFT consensus algorithm')
     parser.add_argument('config',
                         help='Path to config file')
-    parser.add_argument('id', type=int
+    parser.add_argument('id',
+                        type=int,
                         help='Integer identifying this process')
 
     main(parser.parse_args())

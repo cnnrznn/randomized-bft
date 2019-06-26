@@ -12,7 +12,7 @@ class Channel:
         # TODO start a UDP socket
         self.sk = None
 
-    def send(self):
+    def send(self, msg):
         # 1. spin off new thread
         # 2. get my own socket for sending
         # 3. wait with timeouts for response and resend
