@@ -1,3 +1,5 @@
+import socket
+
 class Channel:
 
     # Notes: The send processes must be killable. If they get stuck trying to
@@ -5,12 +7,17 @@ class Channel:
     # a function to clean them up or destroy them, possible selectively (for
     # generality), or in one big KILLALL syle function.
 
+    __port = 3333
+
     def __init__(self, conf, mf):
         self.conf = conf
         self.filter = mf
 
-        # TODO start a UDP socket
-        self.sk = None
+        self.sk = socket.socket(socket.AF_INET,
+                                socket.SOCK_DGRAM)
+        self.sk.bind((self.conf.ips[self.conf.id], self.__port))
+
+
 
     def send(self, msg):
         # 1. spin off new thread
@@ -22,6 +29,8 @@ class Channel:
         # initial, which means there won't be enought ECHO's "in the system" in
         # order to accept the echo.
         pass
+
+
 
     def recv(self):
         # 1. recv a message from the socket
