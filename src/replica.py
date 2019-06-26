@@ -9,6 +9,8 @@ from message import Message, Type
 from message_filter import Filter
 import util
 
+
+
 def do_round(conf, ch, v, r):
     message_count = [ 0, 0 ]
     echo_count = [ [ 0, 0 ] for i in range(conf.n) ]
