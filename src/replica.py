@@ -30,6 +30,9 @@ def do_round(conf, ch, v, r):
     while sum(message_count) < ((2 * conf.f) + 1):
         msg = ch.recv()
 
+        print(msg)
+        exit(0)
+
         if Type.INITIAL == msg.type:
             pass
         elif Type.ECHO == msg.type and r == msg.round:
