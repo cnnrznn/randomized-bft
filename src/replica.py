@@ -18,7 +18,7 @@ def do_round(conf, ch, v, r):
 
     # put value into message channel (asynchronous sending/confirmation) as
     # (initial, me, v, r)
-    ch.send(Message(Type.INITIAL, conf.id, v, r))
+    ch.broadcast(Message(Type.INITIAL, conf.id, v, r))
 
     # while we have less than 2f+1 votes:
     #  1. receive a message, filter only one message from every (type, from,
@@ -30,15 +30,14 @@ def do_round(conf, ch, v, r):
     while sum(message_count) < ((2 * conf.f) + 1):
         msg = ch.recv()
 
-        print(msg)
-        exit(0)
-
         if Type.INITIAL == msg.type:
-            pass
+            ch.broadcast(Message(Type.ECHO, msg.fr, msg.value, msg.round))
         elif Type.ECHO == msg.type and r == msg.round:
-            pass
+            echo_count[msg.fr][msg.value] += 1
+            if echo_count[msg.fr][msg.value] == ((2 * conf.f) + 1):
+                message_count[msg.value] += 1
         elif Type.ECHO == msg.type and r < msg.round:
-            pass
+            ch.send(conf.id, msg)
 
     # v = (message_count[0] > message_count[1]) ? 0 : 1
     # if message_count[i] has >= 2f+1, d = True else False
@@ -64,6 +63,7 @@ def main(args):
     mf = Filter()
     ch = channel.Channel(conf, mf)
 
+    random.seed()
     v = random.randrange(2)
     r = 0
     d = False
@@ -71,6 +71,7 @@ def main(args):
     while not(d):
         v, d = do_round(conf, ch, v, r)
         r += 1
+        print(v, d)
 
     return
 

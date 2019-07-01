@@ -40,16 +40,19 @@ class Channel:
 
             time.sleep(timeout)
 
-            ok, addr = sk.recvfrom(1024)
+            try:
+                ok, addr = sk.recvfrom(1024)
 
-            if "ok" == ok.decode():
-                break
+                if 'ok' == ok.decode():
+                    break
+            except:
+                pass
 
         return
 
 
 
-    def send(self, msg):
+    def broadcast(self, msg):
         # 1. spin off new thread
         # 2. get my own socket for sending
         # 3. wait with timeouts for response and resend
@@ -60,9 +63,18 @@ class Channel:
         # order to accept the echo.
 
         for i in range(self.conf.n):
-            proc = mp.Process(target=self.async_send, args=(msg, i))
-            proc.start()
-            self.procs.append(proc)
+            self.send(i, msg)
+
+        return
+
+
+
+    def send(self, i, msg):
+        proc = mp.Process(target=self.async_send,
+                          args=(msg, i),
+                          daemon=True)
+        proc.start()
+        self.procs.append(proc)
 
         return
 
@@ -74,6 +86,10 @@ class Channel:
         # 3. if the message passes the filter, return it
         # 4. if the filter rejects the message, goto 1.
 
-        data, addr = self.sk.recvfrom(1024)
+        while True:
+            data, addr = self.sk.recvfrom(1024)
+            self.sk.sendto('ok'.encode(), addr)
+            msg = message.from_bytes(data)
 
-        return message.from_bytes(data)
+            if self.filter.filter(addr[0], msg):
+                return msg
