@@ -44,7 +44,7 @@ class Channel:
                 ok, addr = sk.recvfrom(1024)
 
                 if 'ok' == ok.decode():
-                    break
+                    end = True
             except:
                 pass
 

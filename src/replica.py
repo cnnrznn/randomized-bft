@@ -71,7 +71,7 @@ def main(args):
     while not(d):
         v, d = do_round(conf, ch, v, r)
         r += 1
-        print(v, d)
+    print(v, d)
 
     return
 
