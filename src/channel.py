@@ -88,8 +88,11 @@ class Channel:
 
         while True:
             data, addr = self.sk.recvfrom(1024)
-            self.sk.sendto('ok'.encode(), addr)
-            msg = message.from_bytes(data)
+            try:
+                msg = message.from_bytes(data)
+                self.sk.sendto('ok'.encode(), addr)
 
-            if self.filter.filter(addr[0], msg):
-                return msg
+                if self.filter.filter(addr[0], msg):
+                    return msg
+            except:
+                pass
